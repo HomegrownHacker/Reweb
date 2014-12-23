@@ -36,7 +36,6 @@ class Reweb
     private $config;  //kernel configuration
     
     
-    
     public function __construct($config = false) {
         
         //set kernel data
@@ -44,7 +43,6 @@ class Reweb
         
         if(!$config)
         {
-            
             //load the configuration file at the default location
             
             $config = "{$_SERVER['DOCUMENT_ROOT']}/Reweb/config/kernel.conf.php";
@@ -71,9 +69,7 @@ class Reweb
         //check for a filesystem driver
        if($this->config['fs']['driver'] == "Default_fs")
        {
-          
-           
-           
+
            //load the default filesystem driver
            
            if(!require_once($doc_root . '/Reweb/drivers/fs.driver.php'))
@@ -103,6 +99,20 @@ class Reweb
        }
        
        $this->fs->set_doc_root($doc_root);
+       
+       //check for database autoload
+       
+       if($this->config['db']['use_database'])
+       {
+           if(!$this->driver_load($this->config['db']['driver']))
+           {
+               //unable to load the driver, error out.
+               
+               
+               return false;
+           }
+       }
+
        return true;
     }
     
@@ -125,7 +135,6 @@ class Reweb
         {
             return false;
         }
-        
 
         return $temp_driver->get_driver_data();
 
@@ -194,7 +203,6 @@ abstract class Driver
             return false;
         }
     }
-    
     
     //sets the driver data such as name, author and versoin
     abstract protected function driver_data();

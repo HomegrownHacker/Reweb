@@ -51,7 +51,6 @@ class MySQL_db extends Driver
     
     public function connect()
     {
-        //args should be formatted as the kernel $config['db'] array.
         try {
              $this->link = new PDO("mysql:host={$this->config['server']};dbname={$this->config['db_name']};charset=utf8", "{$this->config['username']}", "{$this->config['password']}");
         } catch(PDOException $ex) {
