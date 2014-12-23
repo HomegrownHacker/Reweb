@@ -39,6 +39,9 @@ class Reweb
     
     public function __construct($config = false) {
         
+        //set kernel data
+        $this->kernel_data['version'] = "0.0.1";
+        
         if(!$config)
         {
             
