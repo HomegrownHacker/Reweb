@@ -30,9 +30,9 @@ class Reweb
     
     private $kernel_data; //contains static kernel information
     
-    private $fs;  //contains reference to the filesystem driver object
+    public $fs;  //contains reference to the filesystem driver object
     public $db;  //contains a reference to the database object
-    private $drivers; //contains all of the driver objects
+    public $drivers; //contains all of the driver objects
     private $config;  //kernel configuration
     
     
