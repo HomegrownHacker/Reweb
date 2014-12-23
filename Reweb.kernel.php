@@ -130,3 +130,57 @@ abstract class Driver
     }
     
 }
+
+abstract class Library
+{
+    
+    private $library_data;
+    
+    public function __construct($args = 0)
+    {
+        
+        $this->library_data();
+        
+        $this->init($args);
+        
+    }
+    
+    
+    abstract protected function library_data();
+    
+    abstract protected function init($args);
+    
+    public function get_library_data()
+    {
+        
+        return $this->library_data;
+        
+    }
+}
+
+abstract class Module
+{
+    
+    private $module_data;
+    
+    public function __construct($args = 0)
+    {
+        
+        $this->module_data();
+        
+        $this->init($args);
+        
+    }
+    
+    
+    abstract protected function module_data();
+    
+    abstract protected function init($args);
+    
+    public function get_module_data()
+    {
+        
+        return $this->module_data;
+        
+    }
+}
