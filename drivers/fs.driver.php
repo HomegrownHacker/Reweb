@@ -46,7 +46,17 @@ class Default_fs extends Driver
         $this->driver_data['version'] = "0.0.1";
         $this->driver_data['author'] = "Daniel Henry";
         $this->driver_data['unique'] = true; 
+    }
+    
+    public function get_path($index)
+    {
+        if(isset($this->fs[$index]))
+        {
+            return $this->fs[$index];
+        }
         
+        return false;
+
     }
 }
 
