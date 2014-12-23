@@ -27,7 +27,15 @@ class MySQL_db extends Driver
     
     protected function init($args)
     {
-             
+        if(!$this->config = $this->Rw->get_config_block("db"))
+        {
+            return false;
+        }
+        
+        if(is_array($args) && isset($args['connect']))
+        {
+            $this->connect();
+        }
     }
     
     protected function driver_data()
@@ -41,11 +49,11 @@ class MySQL_db extends Driver
         
     }
     
-    public function load($args)
+    public function connect()
     {
         //args should be formatted as the kernel $config['db'] array.
         try {
-             $this->link = new PDO("mysql:host={$args['server']};dbname={$args['db_name']};charset=utf8", "{$args['username']}", "{$args['password']}");
+             $this->link = new PDO("mysql:host={$this->config['server']};dbname={$this->config['db_name']};charset=utf8", "{$this->config['username']}", "{$this->config['password']}");
         } catch(PDOException $ex) {
             echo "An Error occured!<br />"; //user friendly message
             echo $ex->getMessage();

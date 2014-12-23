@@ -73,7 +73,7 @@ class Reweb
            }
            
            //set the driver instance
-           $this->drivers['fs'] = new Default_fs();
+           $this->drivers['fs'] = new Default_fs($this);
            //create a reference to the fs driver in the kernel `fs` attribute
            $this->fs =& $this->drivers['fs'];
                       
@@ -99,7 +99,7 @@ class Reweb
             return false;
         }
         
-        if(!$temp_driver = new $driver())
+        if(!$temp_driver = new $driver($this))
         {
             return false;
         }
@@ -127,7 +127,7 @@ class Reweb
         
         //include the class and create an object
         require_once($path);
-        $this->drivers[$driver] = new $driver($args);
+        $this->drivers[$driver] = new $driver($this, $args);
         
         //check for a unique flag
         $driver_data = $this->drivers[$driver]->get_driver_data();    
@@ -141,18 +141,36 @@ class Reweb
         
         return true;
     }
+    
+    public function get_config_block($block)
+    {
+        
+        if(isset($this->config[$block]))
+        {
+            return $this->config[$block];
+        }
+        
+        return false;
+    }
 }
 
 abstract class Driver
 {
     
     protected $driver_data;
+    protected $Rw;  //kernel instance
     
-    public function __construct($args = 0) {
-       
+    public function __construct(&$kernel, $args = 0) 
+    {
+        
         $this->driver_data();
         
-        $this->init($args);
+        $this->Rw = &$kernel;
+        
+        if(!$this->init($args))
+        {
+            return false;
+        }
     }
     
     
