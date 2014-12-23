@@ -29,7 +29,7 @@ class Default_fs extends Driver
     protected function init($args)
     {
              
-        $this->fs['doc_root'] = $_SERVER['DOCUMENT_ROOT'];
+        $this->fs['doc_root'] = "";
         $this->fs['rw_root'] = "Reweb";
         $this->fs['config'] = "config";
         $this->fs['drivers'] = "drivers";
@@ -57,6 +57,14 @@ class Default_fs extends Driver
         
         return false;
 
+    }
+    
+    public function set_doc_root($doc_root)
+    {
+        
+        $this->fs['doc_root'] = $doc_root;
+        return true;
+        
     }
 }
 

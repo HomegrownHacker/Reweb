@@ -59,15 +59,24 @@ class Reweb
         
         require_once($config);
         $this->config = $rw_conf;
-       
-       
-       
+              
+        //check for doc_root override
+        if($this->config['fs']['doc_root'])
+        {
+            $doc_root = $this->config['doc_root'];
+        }else{
+            $doc_root = $_SERVER['DOCUMENT_ROOT'];
+        }
+        
         //check for a filesystem driver
        if($this->config['fs']['driver'] == "Default_fs")
        {
+          
+           
+           
            //load the default filesystem driver
            
-           if(!require_once($_SERVER['DOCUMENT_ROOT'] . '/Reweb/drivers/fs.driver.php'))
+           if(!require_once($doc_root . '/Reweb/drivers/fs.driver.php'))
            {
                return false;
            }
@@ -77,11 +86,24 @@ class Reweb
            //create a reference to the fs driver in the kernel `fs` attribute
            $this->fs =& $this->drivers['fs'];
                       
-           return true;
+       }else{
+           
+           //load the alternative filesystem driver
+           
+           if(!require_once($doc_root . $this->config['fs']['driver_path']))
+           {
+               return false;
+           }
+           
+           //set the driver instance
+           $this->drivers['fs'] = new $this->config['fs']['driver']($this);
+           //create a reference to the fs driver in the kernel `fs` attribute
+           $this->fs =& $this->drivers['fs'];
+           
        }
-        
-
        
+       $this->fs->set_doc_root($doc_root);
+       return true;
     }
     
     public function driver_check($driver)
