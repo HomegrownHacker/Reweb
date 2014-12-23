@@ -30,11 +30,13 @@ class Reweb
     
     private $kernel_data; //contains static kernel information
     
-    private $fs;  //contains reference to the filesystem driver object
+    public $fs;  //contains reference to the filesystem driver object
     public $db;  //contains a reference to the database object
-    private $drivers; //contains all of the driver objects
+    public $drivers; //contains all of the driver objects
     private $config;  //kernel configuration
     
+    public $library;  //contains the kernel_library object
+    public $libraries; //contains the currently loaded libraries
     
     public function __construct($config = false) {
         
@@ -184,6 +186,43 @@ class Reweb
         return false;
     }
 }
+
+
+class Kernel_Library
+{
+    private $Rw;
+    
+    public function __construct(&$kernel)
+    {
+        $this->$Rw = $kernel;
+    }
+    
+    public function load($library, $check = true)
+    {
+        if($check)
+        {
+            //check the library with internal function
+        }
+        
+        
+        
+    }
+    
+    
+    public function check($library)
+    {
+        
+        
+        
+    }
+    
+}
+
+
+
+
+
+
 
 abstract class Driver
 {
