@@ -31,8 +31,9 @@ class Reweb
     private $kernel_data; //contains static kernel information
     
     private $fs;  //contains reference to the filesystem driver object
+    public $db;  //contains a reference to the database object
     private $drivers; //contains all of the driver objects
-    private $config;
+    private $config;  //kernel configuration
     
     
     
@@ -82,24 +83,57 @@ class Reweb
     
     public function driver_check($driver)
     {
-
+        $path = "{$this->fs->get_path("doc_root")}/{$this->fs->get_path("rw_root")}/{$this->fs->get_path("drivers")}/$driver.driver.php";
+        
+        if(!file_exists($path))
+        {
+            return false;
+            
+        }
+        
+        if(!require_once($path))
+        {
+            return false;
+        }
+        
+        if(!$temp_driver = new $driver())
+        {
+            return false;
+        }
         
 
-        return true;
+        return $temp_driver->get_driver_data();
 
     }
 
 
-    public function driver_load($driver, $check=true)
+    public function driver_load($driver, $args = 0, $check=true)
     {
+        //check flag is set, so check the driver.
         if($check)
         {
-            if(!$this->check_driver($driver))
+            if(!$this->driver_check($driver))
             {
                 return false;
             }
         }
         
+        //build a path
+        $path = "{$this->fs->get_path("doc_root")}/{$this->fs->get_path("rw_root")}/{$this->fs->get_path("drivers")}/$driver.driver.php";
+        
+        
+        //include the class and create an object
+        require_once($path);
+        $this->drivers[$driver] = new $driver($args);
+        
+        //check for a unique flag
+        $driver_data = $this->drivers[$driver]->get_driver_data();    
+        if($driver_data['unique'])
+        {
+            //if unique is set, create a root level instance
+            $unique = $driver_data['unique'];
+            $this->$unique =& $this->drivers[$driver];
+        }
         
         
         return true;

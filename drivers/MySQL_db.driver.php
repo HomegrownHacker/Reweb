@@ -17,47 +17,46 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
-class Default_fs extends Driver
+class MySQL_db extends Driver
 {
     
     protected $driver_data;
-    private $fs;
+    private $link;
     
     
     
     protected function init($args)
     {
              
-        $this->fs['doc_root'] = $_SERVER['DOCUMENT_ROOT'];
-        $this->fs['rw_root'] = "Reweb";
-        $this->fs['config'] = "config";
-        $this->fs['drivers'] = "drivers";
-        $this->fs['libraries'] = "libraries";
-        $this->fs['modules'] = "modules";
-        $this->fs['var'] = "var";
     }
     
     protected function driver_data()
     {
-        $this->driver_data['name'] = "Default Filesystem";
-        $this->driver_data['type'] = "Filesystem";
-        $this->driver_data['description'] = "The default filesystem for the Reweb framework";
+        $this->driver_data['name'] = "Default MySQL Driver";
+        $this->driver_data['type'] = "Database";
+        $this->driver_data['description'] = "The default MySQL driver for the Reweb framework";
         $this->driver_data['version'] = "0.0.1";
         $this->driver_data['author'] = "Daniel Henry";
-        $this->driver_data['unique'] = "fs"; 
+        $this->driver_data['unique'] = "db"; 
+        
     }
     
-    public function get_path($index)
+    public function load($args)
     {
-        if(isset($this->fs[$index]))
-        {
-            return $this->fs[$index];
+        //args should be formatted as the kernel $config['db'] array.
+        try {
+             $this->link = new PDO("mysql:host={$args['server']};dbname={$args['db_name']};charset=utf8", "{$args['username']}", "{$args['password']}");
+        } catch(PDOException $ex) {
+            echo "An Error occured!<br />"; //user friendly message
+            echo $ex->getMessage();
         }
         
-        return false;
-
     }
+    
+    public function raw_query($query)
+    {
+        $data = $this->link->query($query);
+        return $data->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 }
-
-?>
