@@ -28,6 +28,8 @@
 class Reweb
 {
     
+    private $kernel_data; //contains static kernel information
+    
     private $fs;  //contains reference to the filesystem driver object
     private $drivers; //contains all of the driver objects
     private $config;
@@ -81,7 +83,7 @@ class Reweb
     public function driver_check($driver)
     {
 
-
+        
 
         return true;
 
@@ -110,8 +112,15 @@ abstract class Driver
     protected $driver_data;
     
     public function __construct($args = 0) {
+       
+        $this->driver_data();
+        
         $this->init($args);
     }
+    
+    
+    //sets the driver data such as name, author and versoin
+    abstract protected function driver_data();
     
     abstract protected function init($args);
     

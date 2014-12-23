@@ -28,14 +28,7 @@ class Default_fs extends Driver
     
     protected function init($args)
     {
-        $this->driver_data['name'] = "Default Filesystem";
-        $this->driver_data['type'] = "Filesystem";
-        $this->driver_data['description'] = "The default filesystem for the Reweb framework";
-        $this->driver_data['version'] = "0.0.1";
-        $this->driver_data['author'] = "Daniel Henry";
-        $this->driver_data['unique'] = true;
-        
-        
+             
         $this->fs['doc_root'] = $_SERVER['DOCUMENT_ROOT'];
         $this->fs['rw_root'] = "Reweb";
         $this->fs['config'] = "config";
@@ -45,7 +38,16 @@ class Default_fs extends Driver
         $this->fs['var'] = "var";
     }
     
-    
+    protected function driver_data()
+    {
+        $this->driver_data['name'] = "Default Filesystem";
+        $this->driver_data['type'] = "Filesystem";
+        $this->driver_data['description'] = "The default filesystem for the Reweb framework";
+        $this->driver_data['version'] = "0.0.1";
+        $this->driver_data['author'] = "Daniel Henry";
+        $this->driver_data['unique'] = true; 
+        
+    }
 }
 
 ?>
