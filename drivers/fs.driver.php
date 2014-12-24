@@ -22,20 +22,80 @@ class Default_fs extends Driver
 {
     
     protected $driver_data;
-    private $fs;
+    private $directories;
+    private $doc_root;
     
     
     
     protected function init($args)
     {
-             
-        $this->fs['doc_root'] = "";
-        $this->fs['rw_root'] = "Reweb";
-        $this->fs['config'] = "config";
-        $this->fs['drivers'] = "drivers";
-        $this->fs['libraries'] = "libraries";
-        $this->fs['modules'] = "modules";
-        $this->fs['var'] = "var";
+
+        $this->add_directory("rw_root", "doc_root");
+        $this->add_directory("config", "rw_root");
+        $this->add_directory("drivers", "rw_root");
+        $this->add_directory("libraries", "rw_root");
+        $this->add_directory("modules", "rw_root");
+        $this->add_directory("var", "rw_root");
+          
+    }
+    
+    private function add_directory($name, $parent="root")
+    {
+        
+        if(!$this->directories[$name] = new Fs_dir($name, $parent))
+        {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public function get_path($directory)
+    {
+
+        if(!isset($this->directories[$directory]))
+        {
+            return false;
+        }
+        //build a path
+        unset($path);
+
+        $path[] = $this->directories[$directory]->get_name();
+
+        $path_pointer = $this->directories[$directory]->get_parent();
+
+        while ($path_pointer != "doc_root")
+        {
+
+            $path[] = $this->directories[$path_pointer]->get_name();
+            $path_pointer = $this->directories[$path_pointer]->get_parent();
+
+        }
+
+        $path[] = $this->doc_root;
+
+        //create the string
+
+        $path = array_reverse($path);
+
+        $path_string = "";
+
+        foreach ($path as $dir)
+        {
+            $path_string .= $dir . "/";
+        }
+
+        return $path_string;
+    }
+    
+    public function get_parent($dir)
+    {
+        if(!isset($this->directories[$dir]) || $dir == "doc_root")
+        {
+            return false;
+        }
+        
+        return $this->directories[$dir]->get_parent();
     }
     
     protected function driver_data()
@@ -47,25 +107,23 @@ class Default_fs extends Driver
         $this->driver_data['author'] = "Daniel Henry";
         $this->driver_data['unique'] = "fs"; 
     }
-    
-    public function get_path($index)
-    {
-        if(isset($this->fs[$index]))
-        {
-            return $this->fs[$index];
-        }
-        
-        return false;
 
-    }
     
     public function set_doc_root($doc_root)
     {
-        
-        $this->fs['doc_root'] = $doc_root;
+        if(substr($doc_root, -1) == '/') {
+            $doc_root = substr($doc_root, 0, -1);
+           }
+        $this->doc_root = $doc_root;
         return true;
         
     }
+    
+    public function get_doc_root()
+    {
+        return $this->doc_root;
+    }
+
 }
 
 
