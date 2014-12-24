@@ -157,7 +157,6 @@ class Reweb
         //build a path
         $path = "{$this->fs->get_path("doc_root")}/{$this->fs->get_path("rw_root")}/{$this->fs->get_path("drivers")}/$driver.driver.php";
         
-        
         //include the class and create an object
         require_once($path);
         $this->drivers[$driver] = new $driver($this, $args);
@@ -203,9 +202,7 @@ class Kernel_Library
         {
             //check the library with internal function
         }
-        
-        
-        
+
     }
     
     

@@ -26,7 +26,6 @@ class Default_fs extends Driver
     private $doc_root;
     
     
-    
     protected function init($args)
     {
 
@@ -162,9 +161,6 @@ class Fs_dir
         return $this->parent;
         
     }
-    
-    
-    
 }
 
 ?>
