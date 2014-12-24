@@ -187,40 +187,6 @@ class Reweb
 }
 
 
-class Kernel_Library
-{
-    private $Rw;
-    
-    public function __construct(&$kernel)
-    {
-        $this->$Rw = $kernel;
-    }
-    
-    public function load($library, $check = true)
-    {
-        if($check)
-        {
-            //check the library with internal function
-        }
-
-    }
-    
-    
-    public function check($library)
-    {
-        
-        
-        
-    }
-    
-}
-
-
-
-
-
-
-
 abstract class Driver
 {
     
