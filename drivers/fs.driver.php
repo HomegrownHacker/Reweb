@@ -68,4 +68,45 @@ class Default_fs extends Driver
     }
 }
 
+
+class Fs_dir
+{
+    
+    private $name; // name of the directory
+    private $parent; // name of the parent
+    
+    public function __construct($name, $parent="root")
+    {
+        
+        if($name == "" || $parent == "")
+        {
+            
+            return false;
+        }
+        
+        $this->name = $name;
+        
+        $this->parent = $parent;
+        
+        return true;
+    }
+    
+    public function get_name()
+    {
+        
+        return $this->name;
+        
+    }
+    
+    public function get_parent()
+    {
+        
+        return $this->parent;
+        
+    }
+    
+    
+    
+}
+
 ?>
