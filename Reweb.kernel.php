@@ -38,6 +38,10 @@ class Reweb
     public $library;  //contains the kernel_library object
     public $libraries; //contains the currently loaded libraries
     
+    public $module; //contains the kernel_module object
+    public $mod;    //Shorthand reference to $this->module
+    public $modules; //contains the currently loaded modules
+    
     public function __construct($config = false) {
         
         //set kernel data
@@ -115,6 +119,10 @@ class Reweb
            }
        }
 
+       //create kernel_module object and shorthand reference.
+       
+       $this->module = new Kernel_Module($this);
+       $this->mod = &$this->module;
        return true;
     }
     
@@ -141,7 +149,6 @@ class Reweb
         return $temp_driver->get_driver_data();
 
     }
-
 
     public function driver_load($driver, $args = 0, $check=true)
     {
@@ -185,39 +192,6 @@ class Reweb
         return false;
     }
 }
-
-
-class Kernel_Library
-{
-    private $Rw;
-    
-    public function __construct(&$kernel)
-    {
-        $this->$Rw = $kernel;
-    }
-    
-    public function load($library, $check = true)
-    {
-        if($check)
-        {
-            //check the library with internal function
-        }
-
-    }
-    
-    
-    public function check($library)
-    {
-        
-        
-        
-    }
-    
-}
-
-
-
-
 
 
 
@@ -304,4 +278,50 @@ abstract class Module
         return $this->module_data;
         
     }
+}
+
+class Kernel_Module
+{
+    
+    private $Rw; //kernel reference
+    
+    public function __construct(&$kernel)
+    {
+        $this->Rw = $kernel;
+        
+        //check for required modules and load them
+        
+    }
+    
+    
+    public function check($module)
+    {
+        
+        $path = "{$this->Rw->fs->get_path("modules")}$module/$module.module.php";
+        
+        if(!file_exists($path))
+        {
+            return false;
+        }
+        
+        
+        
+        echo $path;
+        return true;
+    }
+    
+    public function load($module)
+    {
+        
+        return true;
+    }
+    
+    
+}
+
+abstract class Kernel_Library
+{
+    
+    
+    
 }
