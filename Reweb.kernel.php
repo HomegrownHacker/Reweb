@@ -36,11 +36,9 @@ class Reweb
     private $config;  //kernel configuration
     
     public $library;  //contains the kernel_library object
-    public $libraries; //contains the currently loaded libraries
     
     public $module; //contains the kernel_module object
     public $mod;    //Shorthand reference to $this->module
-    public $modules; //contains the currently loaded modules
     
     public function __construct($config = false) {
         
@@ -284,6 +282,7 @@ class Kernel_Module
 {
     
     private $Rw; //kernel reference
+    private $loaded; //loaded modules
     
     public function __construct(&$kernel)
     {
@@ -304,19 +303,67 @@ class Kernel_Module
             return false;
         }
         
+        if(!require_once($path))
+        {
+            
+            return false;
+        }
         
+        if(!$test = new $module())
+        {
+            return false;
+        }
         
-        echo $path;
         return true;
     }
     
-    public function load($module)
+    
+    //load a module, if successful returns a reference to that module
+    public function &load($module, $check = true)
     {
         
+        //check the module if possible
+        if($check)
+        {
+            if(!$this->check($module))
+            {
+                return false;
+            }
+        }
+        
+        //create instance of module class
+        $path = "{$this->Rw->fs->get_path("modules")}$module/$module.module.php";
+        require_once($path);
+        $this->loaded[$module] = new $module();
+        
+        return $this->loaded[$module];
+    }    
+    
+    //check to see that a module is loaded into the kernel
+    public function is_loaded($module)
+    {
+        if(!isset($this->loaded[$module]))
+        {
+            echo "false";
+            return false;
+        }
+        
         return true;
     }
     
-    
+    public function &get_module($module, $check = true)
+    {
+        if($check)
+        {
+            if($this->is_loaded($module))
+            {
+                return $this->loaded[$module];
+            }
+            return false;
+        }
+        
+        return $this->loaded[$module];
+    }
 }
 
 abstract class Kernel_Library
