@@ -29,12 +29,12 @@ class Default_fs extends Driver
     protected function init($args)
     {
 
-        $this->add_directory("rw_root", "doc_root");
-        $this->add_directory("config", "rw_root");
-        $this->add_directory("drivers", "rw_root");
-        $this->add_directory("libraries", "rw_root");
-        $this->add_directory("modules", "rw_root");
-        $this->add_directory("var", "rw_root");
+        $this->add_directory("Reweb", "doc_root");
+        $this->add_directory("config", "Reweb");
+        $this->add_directory("drivers", "Reweb");
+        $this->add_directory("libraries", "Reweb");
+        $this->add_directory("modules", "Reweb");
+        $this->add_directory("var", "Reweb");
           
     }
     
