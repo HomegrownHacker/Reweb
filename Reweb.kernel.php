@@ -252,11 +252,13 @@ abstract class Library
 
 abstract class Module
 {
-    
+    protected $Rw;
     private $module_data;
     
-    public function __construct($args = 0)
+    public function __construct(&$kernel, $args = 0)
     {
+        
+        $this->Rw = $kernel;
         
         $this->module_data();
         
@@ -308,7 +310,7 @@ class Kernel_Module
             return false;
         }
         
-        if(!$test = new $module())
+        if(!$test = new $module($this->Rw))
         {
             return false;
         }
@@ -333,7 +335,7 @@ class Kernel_Module
         //create instance of module class
         $path = "{$this->Rw->fs->get_path("modules")}$module/$module.module.php";
         require_once($path);
-        $this->loaded[$module] = new $module();
+        $this->loaded[$module] = new $module($this->Rw);
         
         return $this->loaded[$module];
     }    
@@ -358,6 +360,7 @@ class Kernel_Module
             {
                 return $this->loaded[$module];
             }
+            echo "failed";
             return false;
         }
         
