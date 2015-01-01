@@ -34,9 +34,7 @@ class Reweb
     public $db;  //contains a reference to the database object
     public $drivers; //contains all of the driver objects
     private $config;  //kernel configuration
-    
-    public $library;  //contains the kernel_library object
-    
+        
     public $module; //contains the kernel_module object
     public $mod;    //Shorthand reference to $this->module
     
@@ -223,33 +221,6 @@ abstract class Driver
     
 }
 
-abstract class Library
-{
-    
-    private $library_data;
-    
-    public function __construct($args = 0)
-    {
-        
-        $this->library_data();
-        
-        $this->init($args);
-        
-    }
-    
-    
-    abstract protected function library_data();
-    
-    abstract protected function init($args);
-    
-    public function get_library_data()
-    {
-        
-        return $this->library_data;
-        
-    }
-}
-
 abstract class Module
 {
     protected $Rw;
@@ -368,9 +339,3 @@ class Kernel_Module
     }
 }
 
-abstract class Kernel_Library
-{
-    
-    
-    
-}

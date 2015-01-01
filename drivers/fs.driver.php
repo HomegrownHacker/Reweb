@@ -32,7 +32,6 @@ class Default_fs extends Driver
         $this->add_directory("Reweb", "doc_root");
         $this->add_directory("config", "Reweb");
         $this->add_directory("drivers", "Reweb");
-        $this->add_directory("libraries", "Reweb");
         $this->add_directory("modules", "Reweb");
         $this->add_directory("var", "Reweb");
           
